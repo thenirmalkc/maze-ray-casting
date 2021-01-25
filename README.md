@@ -1,4 +1,4 @@
-Maze Ray Casting
+# Maze Ray Casting
 
 ## Live Demo [Click Me !!](https://thenirmalkc.github.io/maze-ray-casting/)
 
