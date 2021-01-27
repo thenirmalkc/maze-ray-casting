@@ -14,7 +14,7 @@ function setup() {
     background(40);
 
     // Initializing New Maze
-    maze = new Maze(16, 16);
+    maze = new Maze(12, 12);
 
     // Generating Maze
     maze.generate();
@@ -30,16 +30,14 @@ function setup() {
 function draw() {
     background(40);
 
-    // Displaying Walls
-    for(let i = 0; i < walls.length; i ++)
-        walls[i].display();
+    // Displaying Maze
+    maze.display();
 
     // Casting Particle's rays on walls
     particle.ray_cast(walls);
 
     // Displaying Particle
     particle.display();
-
 
     // Updating Particle's position and direction
     if(keyIsDown(37)) {
@@ -55,31 +53,9 @@ function draw() {
 
 
 function initialize_walls() {
-    const row_res = height / maze.row;
-    const col_res = width  / maze.col;
+    for(let i = 0; i <= maze.row; i ++)
+        walls.push(new Wall(0, i * maze.row_res, width, i * maze.row_res));
 
-    walls.push(new Wall(    0,      0, width,      0));
-    walls.push(new Wall(width,      0, width, height));
-    walls.push(new Wall(width, height,     0, height));
-    walls.push(new Wall(    0, height,     0,      0));
-
-    for(let i = 0; i < maze.row - 1; i ++) {
-        for(let j = 0; j < maze.col; j ++) {
-            const x = j * col_res;
-            const y = i * row_res;
-
-            if(maze.maze[i][j].down_wall)
-                walls.push(new Wall(x, y + row_res, x + col_res, y + row_res));
-        }
-    }
-
-    for(let i = 0; i < maze.row; i ++) {
-        for(let j = 0; j < maze.col - 1; j ++) {
-            const x = j * col_res;
-            const y = i * row_res;
-
-            if (maze.maze[i][j].right_wall)
-                walls.push(new Wall(x + col_res, y, x + col_res, y + row_res));
-        }
-    }
+    for(let i = 0; i <= maze.col; i ++)
+        walls.push(new Wall(i * maze.col_res, 0, i * maze.col_res, height));
 }
