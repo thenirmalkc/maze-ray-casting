@@ -1,12 +1,9 @@
 class Maze {
 
     constructor(row, col) {
-        this.row     = row;
-        this.col     = col;
-        this.maze    = [];
-        this.stack   = [];
-        this.row_res = height / this.row;
-        this.col_res = width  / this.col;
+        this.row = row;
+        this.col = col;
+        this.maze = [];
 
         for(let i = 0; i < this.row; i ++) {
             this.maze.push([]);
@@ -14,10 +11,7 @@ class Maze {
                 this.maze[i].push(new Cell(i, j));
             }
         }
-
-        this.stack.push(this.maze[0][0]);
     }
-
 
     get_neighbours({row, col}) {
         const neighbours = [];
@@ -30,7 +24,6 @@ class Maze {
         return neighbours;
     }
 
-
     get_unvsited_neighbours({row, col}) {
         const neighbours = this.get_neighbours({row, col});
 
@@ -40,7 +33,6 @@ class Maze {
         return neighbours;
     }
 
-
     get_random_unvisited_neighbour({row, col}) {
         const neighbours = this.get_unvsited_neighbours({row, col});
         const neighbour  = neighbours[floor(random(neighbours.length))];
@@ -48,52 +40,55 @@ class Maze {
         return neighbour;
     }
 
-
-    remove_wall(prev_cell, curr_cell) {
-        const row = curr_cell.row - prev_cell.row;
-        const col = curr_cell.col - prev_cell.col;
+    remove_wall(curr_cell, next_cell) {
+        const row = next_cell.row - curr_cell.row;
+        const col = next_cell.col - curr_cell.col;
 
         if (row == -1) {
-            prev_cell.top_wall   = false;
-            curr_cell.down_wall  = false;
+            curr_cell.top_wall   = false;
+            next_cell.down_wall  = false;
         }
         else if (row == 1) {
-            prev_cell.down_wall  = false;
-            curr_cell.top_wall   = false;
+            curr_cell.down_wall  = false;
+            next_cell.top_wall   = false;
         }
         else if (col == -1) {
-            prev_cell.left_wall  = false;
-            curr_cell.right_wall = false;
+            curr_cell.left_wall  = false;
+            next_cell.right_wall = false;
         }
         else if (col == 1) {
-            prev_cell.right_wall = false;
-            curr_cell.left_wall  = false;
+            curr_cell.right_wall = false;
+            next_cell.left_wall  = false;
         }
     }
 
-
     generate() {
-        while(this.stack.length) {
-            const top   = this.stack[this.stack.length - 1];
+        const stack = [];
+        stack.push(this.maze[0][0]);
+
+        while(stack.length) {
+            const top = stack[stack.length - 1];
             top.visited = true;
 
             const neighbour = this.get_random_unvisited_neighbour(top);
 
             if(neighbour) {
-                this.stack.push(neighbour);
+                stack.push(neighbour);
                 this.remove_wall(top, neighbour);
             }
             else {
-                this.stack.pop();
+                stack.pop();
             }
         }
     }
 
+    display(width, height) {
+        const cRes = width  / this.col;
+        const rRes = height / this.row;
 
-    display() {
         for(let i = 0; i < this.row; i ++)
             for(let j = 0; j < this.col; j ++)
-                this.maze[i][j].display(this.row_res, this.col_res);
+                this.maze[i][j].display(rRes, cRes);
     }
 
 }

@@ -1,53 +1,43 @@
 class Cell {
 
     constructor(row, col) {
-        this.row                = row;
-        this.col                = col;
-        this.visited            = false;
-        this.top_wall           = true;
-        this.down_wall          = true;
-        this.left_wall          = true;
-        this.right_wall         = true;
-        this.top_wall_visible   = false;
-        this.down_wall_visible  = false;
-        this.left_wall_visible  = false;
-        this.right_wall_visible = false;
+        this.row = row;
+        this.col = col;
+        this.visited = false;
 
+        this.top_wall   = true;
+        this.down_wall  = true;
+        this.left_wall  = true;
+        this.right_wall = true;
+
+        this.TopWallVisible   = false;
+        this.DownWallVisible  = false;
+        this.LeftWallVisible  = false;
+        this.RightWallVisible = false;
     }
 
 
-    display(row_res, col_res) {
-        const x = this.col * col_res;
-        const y = this.row * row_res;
+    display(rRes, cRes) {
+        const x = this.col * cRes
+        const y = this.row * rRes;
 
-        strokeWeight(1);
+        strokeWeight(2);
+        stroke(color(200, 200, 200));
 
-        if (this.top_wall_visible) {
-            stroke(40);
-            line(x          , y          , x + col_res, y          );
-            stroke(255);
-            line(x          , y          , x + col_res, y          );
+        if(this.TopWallVisible)   {
+            line(x       , y       , x + cRes, y       );
         }
 
-        if (this.down_wall_visible) {
-            stroke(40);
-            line(x          , y + row_res, x + col_res, y + row_res);
-            stroke(255);
-            line(x          , y + row_res, x + col_res, y + row_res);
+        if(this.DownWallVisible)  {
+            line(x       , y + rRes, x + cRes, y + rRes);
         }
 
-        if (this.left_wall_visible) {
-            stroke(40);
-            line(x          , y          , x          , y + row_res);
-            stroke(255);
-            line(x          , y          , x          , y + row_res);
+        if(this.LeftWallVisible)  {
+            line(x       , y       , x       , y + rRes);
         }
 
-        if (this.right_wall_visible) {
-            stroke(40);
-            line(x + col_res, y          , x + col_res, y + row_res);
-            stroke(255);
-            line(x + col_res, y          , x + col_res, y + row_res);
+        if(this.RightWallVisible) {
+            line(x + cRes, y       , x + cRes, y + rRes);
         }
     }
 
